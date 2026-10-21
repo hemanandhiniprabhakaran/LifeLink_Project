@@ -1,0 +1,30 @@
+[
+  {
+    "id": "U001",
+    "username": "admin",
+    "passwordHash": "$2b$12$gsGtggFcmTIUdX3SW9zo1uDwlZjmlM35S/sg5AXCoi2k1K5kf7Bdq",
+    "role": "admin",
+    "active": true
+  },
+  {
+    "id": "U002",
+    "username": "hospital",
+    "passwordHash": "",
+    "role": "hospital",
+    "active": true
+  },
+  {
+    "id": "U1792513003276",
+    "username": "testing",
+    "passwordHash": "$2b$12$Vtk0SI550NQkfTEtgFZZc.cqOSJHhHU87I78nDsACCrcceYeG2y0W",
+    "role": "admin",
+    "active": true
+  },
+  {
+    "id": "U1792518280213",
+    "username": "testing1",
+    "passwordHash": "$2b$12$C.oentk9h2x.ryuM4E10COt345klGYXunL/junLVMfWZib.soTHyO",
+    "role": "hospital",
+    "active": true
+  }
+]

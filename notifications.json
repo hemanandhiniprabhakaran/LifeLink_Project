@@ -1,0 +1,25 @@
+[
+  {
+    "id": "N-1792516735500-3297",
+    "title": "LifeLink Test",
+    "message": "Testing notification storage",
+    "type": "info",
+    "read": false
+  },
+  {
+    "id": "N1792517115087",
+    "title": "Tracking update",
+    "message": "Tracking for Kidney has been updated. Current status: Scheduled.",
+    "type": "info",
+    "read": true,
+    "date": "2026-10-20T17:25:15.087Z"
+  },
+  {
+    "id": "N1792518404254",
+    "title": "Tracking update",
+    "message": "Tracking for Kidney has been updated. Current status: In transit.",
+    "type": "info",
+    "read": false,
+    "date": "2026-10-20T17:46:44.254Z"
+  }
+]

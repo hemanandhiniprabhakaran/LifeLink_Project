@@ -1,0 +1,42 @@
+[
+  {
+    "id": "H-301",
+    "name": "Meenakshi Medical Centre",
+    "city": "Madurai",
+    "contact": "transplant@mmc.example",
+    "doctors": 8,
+    "status": "Verified"
+  },
+  {
+    "id": "H-302",
+    "name": "City Care Hospital",
+    "city": "Chennai",
+    "contact": "coordination@citycare.example",
+    "doctors": 5,
+    "status": "Verified"
+  },
+  {
+    "id": "H-303",
+    "name": "Green Valley Hospital",
+    "city": "Coimbatore",
+    "contact": "admin@gvh.example",
+    "doctors": 3,
+    "status": "Pending review"
+  },
+  {
+    "id": "H-1792335463136",
+    "name": "apllo",
+    "city": "Chennai",
+    "contact": "apllo2087173@gmail.com",
+    "doctors": 2,
+    "status": "Pending review"
+  },
+  {
+    "id": "H-1792507117355-3241",
+    "name": "test hospital",
+    "city": "Madurai",
+    "contact": "test@example.com",
+    "doctors": 5,
+    "status": "Pending review"
+  }
+]

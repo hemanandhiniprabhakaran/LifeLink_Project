@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LifeLink | Organ Donation & Transplant Coordination</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div
+    id="login-screen"
+    style="max-width: 380px; margin: 80px auto; padding: 28px;"
+  >
+    <div class="brand" style="margin-bottom: 25px;">
+      <div class="brand-mark">♥</div>
+      <div>
+        <h1>LifeLink</h1>
+        <small>Organ care coordination</small>
+      </div>
+    </div>
+
+    <h2>Welcome back</h2>
+    <p>Please log in to continue.</p>
+
+    <form id="login-form">
+
+      <div style="margin-bottom: 16px;">
+        <label for="login-username">Username</label>
+
+        <input
+          type="text"
+          id="login-username"
+          name="username"
+          placeholder="Enter username"
+          autocomplete="username"
+          required
+          style="display:block; width:100%; box-sizing:border-box; margin-top:6px; padding:12px;"
+        >
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <label for="login-password">Password</label>
+
+        <input
+          type="password"
+          id="login-password"
+          name="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required
+          style="display:block; width:100%; box-sizing:border-box; margin-top:6px; padding:12px;"
+        >
+      </div>
+
+      <button type="submit" class="btn">
+        Log In
+      </button>
+
+      <p
+        id="login-error"
+        role="alert"
+        style="color:#b42318; margin-top:12px;"
+      ></p>
+
+    </form>
+
+    <p style="font-size:12px; color:#777;">
+      LifeLink student demonstration · Sample data only
+    </p>
+  </div>
+
+
+  <!-- APPLICATION: HIDDEN UNTIL LOGIN -->
+  <div id="app-content" hidden>
+
+    <div class="app">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="brand">
+          <div class="brand-mark">♥</div>
+
+          <div>
+            <h1>LifeLink</h1>
+            <small>Organ care coordination</small>
+          </div>
+        </div>
+
+        <div class="nav-label">Workspace</div>
+
+        <button class="nav-btn active" data-page="dashboard">
+          <span>▦</span>
+          <b class="nav-text">Dashboard</b>
+        </button>
+
+        <button class="nav-btn" data-page="donors">
+          <span>♡</span>
+          <b class="nav-text">Donors</b>
+        </button>
+
+        <button class="nav-btn" data-page="recipients">
+          <span>✚</span>
+          <b class="nav-text">Recipients</b>
+        </button>
+
+        <button class="nav-btn" data-page="hospitals">
+          <span>⌂</span>
+          <b class="nav-text">Hospitals</b>
+        </button>
+
+        <div class="nav-label">Coordination</div>
+
+        <button class="nav-btn" data-page="matching">
+          <span>⇄</span>
+          <b class="nav-text">Organ matching</b>
+        </button>
+
+        <button class="nav-btn" data-page="tracking">
+          <span>➜</span>
+          <b class="nav-text">Transplant tracking</b>
+        </button>
+
+        <button class="nav-btn" data-page="notifications">
+          <span>♧</span>
+          <b class="nav-text">Notifications</b>
+        </button>
+
+        <div class="nav-label">Administration</div>
+
+        <button class="nav-btn" data-page="users">
+          <span>☷</span>
+          <b class="nav-text">Users &amp; access</b>
+        </button>
+
+        <button class="nav-btn" data-page="reports">
+          <span>▤</span>
+          <b class="nav-text">Reports</b>
+        </button>
+
+        <div class="side-bottom">
+          Helping teams coordinate care with clarity.<br>
+          Demo interface · Sample data only
+        </div>
+
+      </aside>
+
+
+      <!-- MAIN CONTENT -->
+      <main class="main">
+
+        <header class="topbar">
+
+          <div class="crumb">
+            LifeLink /
+            <strong id="top-title">Dashboard overview</strong>
+          </div>
+
+          <div class="top-actions">
+
+            <input
+              class="search"
+              id="globalSearch"
+              placeholder="Search records…"
+              aria-label="Search records"
+            >
+
+            <button
+              class="btn secondary small"
+              onclick="showPage('notifications')"
+              type="button"
+              aria-label="Open notifications"
+            >
+              ♧
+              <span id="bell-count">0</span>
+            </button>
+
+            <span id="logged-in-user"></span>
+
+            <button
+              type="button"
+              class="btn secondary small"
+              id="logout-button"
+            >
+              Log out
+            </button>
+
+          </div>
+
+        </header>
+
+        <div class="content" id="content"></div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- TOAST MESSAGE -->
+  <div class="toast" id="toast"></div>
+
+
+  <!-- EXISTING APPLICATION SCRIPT -->
+  <script src="script.js"></script>
+
+
+  <!-- LOGIN AND LOGOUT SCRIPT -->
+  <script>
+    const loginScreen = document.getElementById("login-screen");
+    const appContent = document.getElementById("app-content");
+    const loginForm = document.getElementById("login-form");
+    const loginError = document.getElementById("login-error");
+    const logoutButton = document.getElementById("logout-button");
+    const loggedInUser = document.getElementById("logged-in-user");
+
+    let currentUser = null;
+
+    async function checkLogin() {
+      try {
+        const response = await fetch("/api/me", {
+          credentials: "same-origin"
+        });
+
+        if (!response.ok) {
+          currentUser = null;
+          loginScreen.hidden = false;
+          appContent.hidden = true;
+          return;
+        }
+
+        const result = await response.json();
+
+        currentUser = result.user;
+
+        loginScreen.hidden = true;
+        appContent.hidden = false;
+
+        loggedInUser.textContent =
+          currentUser.username + " (" + currentUser.role + ")";
+
+        if (typeof showPage === "function") {
+          showPage("dashboard");
+        }
+
+      } catch (error) {
+        console.error("Login check failed:", error);
+
+        loginScreen.hidden = false;
+        appContent.hidden = true;
+
+        loginError.textContent =
+          "Cannot connect to the server. Please check that the backend is running.";
+      }
+    }
+
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      loginError.textContent = "";
+
+      const username =
+        document.getElementById("login-username").value.trim();
+
+      const password =
+        document.getElementById("login-password").value;
+
+      try {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          loginError.textContent =
+            result.error || "Invalid username or password.";
+
+          return;
+        }
+
+        loginForm.reset();
+
+        await checkLogin();
+
+      } catch (error) {
+        console.error("Login failed:", error);
+
+        loginError.textContent =
+          "Login failed. Make sure the server is running.";
+      }
+    });
+
+
+    logoutButton.addEventListener("click", async function () {
+      try {
+        const response = await fetch("/api/logout", {
+          method: "POST",
+          credentials: "same-origin"
+        });
+
+        if (!response.ok) {
+          throw new Error("Logout failed");
+        }
+
+        currentUser = null;
+
+        appContent.hidden = true;
+        loginScreen.hidden = false;
+
+        loginError.textContent = "";
+        loginForm.reset();
+
+      } catch (error) {
+        console.error("Logout failed:", error);
+        alert("Unable to log out. Please try again.");
+      }
+    });
+
+
+    checkLogin();
+  </script>
+
+</body>
+</html>
